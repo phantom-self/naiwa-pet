@@ -1,0 +1,11 @@
+{
+  "name": "naiwa-bubble",
+  "version": "1.0.0",
+  "private": true,
+  "description": "悬浮账本气泡：读 DSH 本地账本，显示本次/累计花费与 token",
+  "main": "main.js",
+  "scripts": {
+    "start": "electron .",
+    "snapshot": "electron . --snapshot"
+  }
+}
