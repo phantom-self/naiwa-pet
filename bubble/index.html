@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8" />
+<style>
+  :root{
+    --ink:#1b1f27;
+    --ink-2:#6f7787;
+    --ink-3:#98a0ad;
+    --card:#ffffff;
+    --edge:rgba(15,20,30,.07);
+  }
+  *{ margin:0; padding:0; box-sizing:border-box; -webkit-user-select:none; }
+  html,body{ width:100%; height:100%; background:transparent; overflow:hidden;
+             font-family:"Microsoft YaHei UI","PingFang SC",system-ui,sans-serif; }
+
+  .wrap{
+    position:relative;
+    width:276px; height:104px;
+    margin:8px auto 0;
+    filter:drop-shadow(0 10px 22px rgba(10,16,28,.22));
+    -webkit-app-region:drag;
+  }
+  .bubble{
+    position:absolute; inset:0;
+    background:linear-gradient(180deg,#ffffff 0%, #fbfcfe 100%);
+    border-radius:18px;
+    border:1px solid var(--edge);
+    overflow:hidden;
+    box-shadow:inset 0 1px 0 rgba(255,255,255,.9);
+    display:flex; flex-direction:column; justify-content:center;
+    padding:0 18px;
+  }
+  /* 尾巴 */
+  .wrap::after{
+    content:"";
+    position:absolute;
+    right:58px; bottom:-8px;
+    width:22px; height:22px;
+    background:linear-gradient(180deg,#fbfcfe,#fbfcfe);
+    border-right:1px solid var(--edge);
+    border-bottom:1px solid var(--edge);
+    transform:rotate(45deg);
+    border-bottom-right-radius:5px;
+  }
+
+  .head{
+    display:flex; align-items:center; gap:6px;
+    font-size:11.5px; color:var(--ink-3); letter-spacing:.3px;
+  }
+  .dot{ width:5px; height:5px; border-radius:50%; background:#59b96b; box-shadow:0 0 0 2.5px rgba(89,185,107,.16); }
+
+  .amount{
+    display:flex; align-items:baseline; gap:2px;
+    margin:2px 0 3px;
+    color:var(--ink);
+  }
+  .currency{ font-size:21px; font-weight:600; color:var(--ink-2); transform:translateY(-9px); letter-spacing:0; }
+  .value{
+    font-size:36px; font-weight:700; letter-spacing:-1px;
+    font-variant-numeric:tabular-nums;
+    background:linear-gradient(180deg,#232a36,#0f141c);
+    -webkit-background-clip:text; -webkit-text-fill-color:transparent;
+  }
+  .unit{ font-size:13px; color:var(--ink-3); margin-left:3px; }
+
+  .sub{
+    display:flex; align-items:center; gap:8px;
+    font-size:11.5px; color:var(--ink-2);
+  }
+  .chip{
+    background:#f2f5f9; border-radius:6px; padding:2px 7px;
+    font-variant-numeric:tabular-nums;
+  }
+
+  .pulse{ animation:pulse .5s ease; }
+  @keyframes pulse{
+    0%{ transform:translateY(0); opacity:1; }
+    45%{ transform:translateY(-2px); opacity:.72; }
+    100%{ transform:translateY(0); opacity:1; }
+  }
+</style>
+</head>
+<body>
+  <div class="wrap">
+    <div class="bubble">
+      <div class="head"><span class="dot"></span><span id="title">本次会话</span></div>
+      <div class="amount">
+        <span class="currency">¥</span><span class="value" id="value">0.00</span>
+      </div>
+      <div class="sub">
+        <span class="chip" id="tok">0.0M tok</span>
+        <span id="total">累计 ¥0.00</span>
+      </div>
+    </div>
+  </div>
+
+<script>
+  const $ = (id) => document.getElementById(id)
+  const fmt = (n, d = 2) => Number(n || 0).toFixed(d)
+
+  function render(d) {
+    $('value').textContent = fmt(d.lastCny)
+    $('tok').textContent = fmt(d.lastTok, 1) + 'M tok'
+    $('total').textContent = '累计 ¥' + fmt(d.totalCny)
+    const v = $('value')
+    v.classList.remove('pulse')
+    void v.offsetWidth
+    v.classList.add('pulse')
+  }
+
+  window.naiwa.onLedger(render)
+</script>
+</body>
+</html>
