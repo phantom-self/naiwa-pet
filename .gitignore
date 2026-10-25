@@ -1,0 +1,23 @@
+# 不要提交任何角色素材
+*.mov
+*.gif
+*.jpg
+*.jpeg
+!docs/
+# 工作目录
+work/
+out/
+_raw/
+_rgba/
+
+# 依赖与产物
+node_modules/
+__pycache__/
+*.pyc
+snapshot.png
+bubble-pos.json
+
+# 系统
+Thumbs.db
+desktop.ini
+.DS_Store
